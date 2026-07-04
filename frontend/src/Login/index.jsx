@@ -9,6 +9,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const signurl = import.meta.env.SIGN_UP_URL;
+
 
   const token = Cookies.get("token");
   useEffect(() => {
@@ -21,7 +23,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://v9fes04dwf.execute-api.eu-north-1.amazonaws.com/api/auth/signin",
+        `${signurl}`,
         {
           email,
           password,

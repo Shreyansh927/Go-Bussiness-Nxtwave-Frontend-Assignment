@@ -9,12 +9,14 @@ const ReferralDetailRoute = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [referralDetail, setReferralDetail] = useState(null);
+  const url =
+    import.meta.env.REFERRAL_URL
 
   const getReferralDetail = useCallback(async () => {
     try {
       const token = Cookies.get("token");
       const res = await axios.get(
-        `https://v9fes04dwf.execute-api.eu-north-1.amazonaws.com/api/referrals?id=${id}`,
+        `${url}?id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
