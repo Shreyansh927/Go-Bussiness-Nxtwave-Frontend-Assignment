@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const signurl = import.meta.env.SIGN_UP_URL;
+  const signurl = import.meta.env.VITE_SIGN_UP_URL;
 
 
   const token = Cookies.get("token");
@@ -29,6 +29,7 @@ const Login = () => {
           password,
         },
       );
+      console.log(signurl);
       if (res.data.success) {
         Cookies.set("token", res.data.data.token, { expires: 1 }); // Set token in cookies with 1-day expiration
         navigate("/"); // Redirect to home page after successful login

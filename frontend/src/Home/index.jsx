@@ -16,7 +16,7 @@ const Home = () => {
   const [startPageIndex, setStartPageIndex] = useState(0);
   const [endPageIndex, setEndPageIndex] = useState(10);
   const [t, setT] = useState(0);
-  const url = import.meta.env.REFERRAL_URL;
+  const url = import.meta.env.VITE_REFERRAL_URL;
   // Debounse the search input to avoid excessive API calls
   useEffect(() => {
     const delayDebounceFunc = setTimeout(() => {

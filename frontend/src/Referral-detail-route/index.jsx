@@ -9,20 +9,16 @@ const ReferralDetailRoute = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [referralDetail, setReferralDetail] = useState(null);
-  const url =
-    import.meta.env.REFERRAL_URL
+  const url = import.meta.env.VITE_REFERRAL_URL;
 
   const getReferralDetail = useCallback(async () => {
     try {
       const token = Cookies.get("token");
-      const res = await axios.get(
-        `${url}?id=${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await axios.get(`${url}?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       console.log("Referral detail data:", res?.data?.data?.referrals?.[0]);
       setReferralDetail(res.data.data.referrals[0]);
     } catch (error) {
@@ -72,7 +68,13 @@ const ReferralDetailRoute = () => {
 
           <div className="detail-row">
             <p>DATE</p>
-            <p>{new Date(referralDetail?.date).toLocaleDateString()}</p>
+            <p>
+              {new Date(referralDetail?.date).toLocaleDateString("en-GB", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
           </div>
 
           <div className="detail-row">
