@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./index.css";
 import Cookies from "js-cookie";
 
 const Login = () => {
@@ -37,31 +38,45 @@ const Login = () => {
     // Add login logic here
   };
 
-  return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      <p>{error}</p>
-    </>
-  );
+ return (
+   <div className="login-container">
+     <div className="login-card">
+       <h1 className="login-title">Go Business</h1>
+
+       <p className="login-subtitle">
+         Sign in to open your referral dashboard.
+       </p>
+
+       <form className="login-form" onSubmit={handleSubmit}>
+         <div className="form-group">
+           <label>Email</label>
+           <input
+             type="email"
+             placeholder="you@example.com"
+             value={email}
+             onChange={(e) => setEmail(e.target.value)}
+           />
+         </div>
+
+         <div className="form-group">
+           <label>Password</label>
+           <input
+             type="password"
+             placeholder="********"
+             value={password}
+             onChange={(e) => setPassword(e.target.value)}
+           />
+         </div>
+
+         <button className="login-btn" type="submit">
+           Sign In
+         </button>
+
+         {error && <p className="error-text">{error}</p>}
+       </form>
+     </div>
+   </div>
+ );
 };
 
 export default Login;

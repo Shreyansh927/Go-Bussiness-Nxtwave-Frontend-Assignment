@@ -1,0 +1,86 @@
+.referrals-table-container {
+  width: 100%;
+}
+
+/* Desktop Table */
+
+.referrals-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.referrals-table thead {
+  background: #f8fafc;
+}
+
+.referrals-table th {
+  padding: 18px;
+  text-align: left;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.referrals-table td {
+  padding: 20px 18px;
+  border-top: 1px solid #edf2f7;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.referrals-table tbody tr {
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.referrals-table tbody tr:hover {
+  background: #f8f9ff;
+}
+
+.profit {
+  color: #5b5ce9;
+  font-weight: 700;
+}
+
+/* Mobile Cards */
+
+
+.mobile-referrals {
+  display: none;
+}
+
+.mobile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+  border: 1px solid #ececec;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .05);
+}
+
+.mobile-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 0;
+}
+
+.mobile-row span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.mobile-row strong {
+  color: #111827;
+}
+
+@media (max-width:768px) {
+
+  .referrals-table {
+    display: none;
+  }
+
+  .mobile-referrals {
+    display: block;
+  }
+
+}
