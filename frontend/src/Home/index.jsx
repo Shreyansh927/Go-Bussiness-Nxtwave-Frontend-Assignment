@@ -142,15 +142,26 @@ const Home = () => {
               <div className="referral-grid">
                 <div className="referral-input">
                   <label>Your Referral Link</label>
-
-                  <input readOnly value={currentUserReferral?.link || ""} />
-                  <button>copy</button>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <input readOnly value={currentUserReferral?.link || ""} />
+                    <button className="copy-button" readOnly>
+                      copy
+                    </button>
+                  </div>
                 </div>
 
                 <div className="referral-input">
                   <label>Your Referral Code</label>
-
-                  <input readOnly value={currentUserReferral?.code || ""} />
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <input
+                      width="100%"
+                      readOnly
+                      value={currentUserReferral?.code || ""}
+                    />
+                    <button className="copy-button" readOnly>
+                      copy
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
@@ -188,8 +199,8 @@ const Home = () => {
               <div>
                 <div>
                   <p>
-                    Showing {startPageIndex + 1}-{endPageIndex} of{" "}
-                    {totalReferrals}
+                    Showing {startPageIndex + 1}-
+                    {Math.min(endPageIndex, totalReferrals)} of {totalReferrals}
                   </p>
                 </div>
                 <div className="pagination">
@@ -206,8 +217,6 @@ const Home = () => {
           <div className="loading-container">
             <p>Loading Dashboard...</p>
           </div>
-    
-          
         )}
       </main>
       <Footer />

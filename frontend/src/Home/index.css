@@ -92,6 +92,17 @@ body{
     flex-direction:column;
 }
 
+.copy-button{
+    margin-top:10px;
+    width:100px;
+    height:40px;
+    background:#5b5ce9;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
 .loading-container{
     display:flex;
     justify-content:center;
