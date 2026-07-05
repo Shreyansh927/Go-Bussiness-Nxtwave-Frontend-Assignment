@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Referrals from "../Referrals";
 import Headers from "../header";
+import Footer from "../footer";
 
 const Home = () => {
   const [overview, setOverview] = useState([]);
@@ -16,18 +17,20 @@ const Home = () => {
   const [startPageIndex, setStartPageIndex] = useState(0);
   const [endPageIndex, setEndPageIndex] = useState(10);
   const [t, setT] = useState(0);
+  const [loading, setLoading] = useState(true);
   const url = import.meta.env.VITE_REFERRAL_URL;
+
   // Debounse the search input to avoid excessive API calls
   useEffect(() => {
     const delayDebounceFunc = setTimeout(() => {
-      getOverview();
+      getDashboardOverview();
       console.log("searchService:", searchService);
     }, 500);
 
     return () => clearTimeout(delayDebounceFunc);
   }, [searchService, currentSortingOrder, startPageIndex, endPageIndex]);
 
-  const getOverview = useCallback(async () => {
+  const getDashboardOverview = useCallback(async () => {
     try {
       const token = Cookies.get("token");
       const res = await axios.get(
@@ -66,12 +69,14 @@ const Home = () => {
         }));
       setReferrals(formattedReferrals);
       const totalReferralsCount = res?.data?.data?.referrals?.length || 0;
-      setTotalReferrals(Math.ceil(formattedReferrals.length / 10));
+      setTotalReferrals(Math.ceil(totalReferralsCount));
       setT(Math.ceil(totalReferralsCount / 10));
       console.log("total referrals:", totalReferrals);
+      setLoading(false);
       // setOverview(res.data);
     } catch (e) {
       console.error("Error fetching overview:", e);
+      setLoading(false);
     }
   }, [searchService, currentSortingOrder, startPageIndex, endPageIndex]);
 
@@ -97,96 +102,115 @@ const Home = () => {
         </section>
 
         {/* Overview */}
+        {!loading ? (
+          <>
+            <section className="dashboard-card">
+              <h3>Overview</h3>
 
-        <section className="dashboard-card">
-          <h3>Overview</h3>
+              <div className="overview-grid">
+                {overview.map((metric) => (
+                  <div className="metric-card" key={metric.id}>
+                    <h2>{metric.value}</h2>
 
-          <div className="overview-grid">
-            {overview.map((metric) => (
-              <div className="metric-card" key={metric.id}>
-                <h2>{metric.value}</h2>
-
-                <p>{metric.label}</p>
+                    <p>{metric.label}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
 
-        {/* Service Summary */}
+            {/* Service Summary */}
 
-        <section className="dashboard-card">
-          <h3>Service Summary</h3>
+            <section className="dashboard-card">
+              <h3>Service Summary</h3>
 
-          <div className="summary-grid">
-            {Object.entries(summary).map(([key, value]) => (
-              <div className="summary-card" key={key}>
-                <span>{key}</span>
+              <div className="summary-grid">
+                {Object.entries(summary).map(([key, value]) => (
+                  <div className="summary-card" key={key}>
+                    <span>{key}</span>
 
-                <h4>{value}</h4>
+                    <h4>{value}</h4>
+                  </div>
+                ))}
               </div>
-            ))}
+            </section>
+
+            {/* Referral */}
+
+            <section className="dashboard-card">
+              <h3>Refer friends and earn more</h3>
+
+              <div className="referral-grid">
+                <div className="referral-input">
+                  <label>Your Referral Link</label>
+
+                  <input readOnly value={currentUserReferral?.link || ""} />
+                  <button>copy</button>
+                </div>
+
+                <div className="referral-input">
+                  <label>Your Referral Code</label>
+
+                  <input readOnly value={currentUserReferral?.code || ""} />
+                </div>
+              </div>
+            </section>
+
+            {/* Referrals */}
+
+            <section className="dashboard-card">
+              <div className="toolbar">
+                <div className="search-box">
+                  <label>Search</label>
+
+                  <input
+                    placeholder="Name or service..."
+                    type="search"
+                    value={searchService}
+                    onChange={(e) => setSearchService(e.target.value)}
+                  />
+                </div>
+
+                <div className="sort-box">
+                  <label>Sort by date</label>
+
+                  <select
+                    value={currentSortingOrder}
+                    onChange={(e) => setCurrentSortingOrder(e.target.value)}
+                  >
+                    <option value="desc">Newest first</option>
+
+                    <option value="asc">Oldest first</option>
+                  </select>
+                </div>
+              </div>
+
+              <Referrals referrals={referrals} />
+              <div>
+                <div>
+                  <p>
+                    Showing {startPageIndex + 1}-{endPageIndex} of{" "}
+                    {totalReferrals}
+                  </p>
+                </div>
+                <div className="pagination">
+                  {Array.from({ length: t }, (_, index) => (
+                    <button key={index} onClick={() => updatePageNo(index + 1)}>
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
+        ) : (
+          <div className="loading-container">
+            <p>Loading Dashboard...</p>
           </div>
-        </section>
-
-        {/* Referral */}
-
-        <section className="dashboard-card">
-          <h3>Refer friends and earn more</h3>
-
-          <div className="referral-grid">
-            <div className="referral-input">
-              <label>Your Referral Link</label>
-
-              <input readOnly value={currentUserReferral?.link || ""} />
-            </div>
-
-            <div className="referral-input">
-              <label>Your Referral Code</label>
-
-              <input readOnly value={currentUserReferral?.code || ""} />
-            </div>
-          </div>
-        </section>
-
-        {/* Referrals */}
-
-        <section className="dashboard-card">
-          <div className="toolbar">
-            <div className="search-box">
-              <label>Search</label>
-
-              <input
-                placeholder="Name or service..."
-                value={searchService}
-                onChange={(e) => setSearchService(e.target.value)}
-              />
-            </div>
-
-            <div className="sort-box">
-              <label>Sort by date</label>
-
-              <select
-                value={currentSortingOrder}
-                onChange={(e) => setCurrentSortingOrder(e.target.value)}
-              >
-                <option value="desc">Newest first</option>
-
-                <option value="asc">Oldest first</option>
-              </select>
-            </div>
-          </div>
-
-          <Referrals referrals={referrals} />
-
-          <div className="pagination">
-            {Array.from({ length: t }, (_, index) => (
-              <button key={index} onClick={() => updatePageNo(index + 1)}>
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        </section>
+    
+          
+        )}
       </main>
+      <Footer />
     </div>
   );
 };

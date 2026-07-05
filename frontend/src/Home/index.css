@@ -92,6 +92,13 @@ body{
     flex-direction:column;
 }
 
+.loading-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:200px;
+}
+
 .referral-input label{
     margin-bottom:10px;
     font-weight:600;

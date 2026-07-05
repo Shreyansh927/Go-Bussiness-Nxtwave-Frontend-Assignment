@@ -10,6 +10,7 @@ const ReferralDetailRoute = () => {
   const navigate = useNavigate();
   const [referralDetail, setReferralDetail] = useState(null);
   const url = import.meta.env.VITE_REFERRAL_URL;
+  const [loading, setLoading] = useState(true);
 
   const getReferralDetail = useCallback(async () => {
     try {
@@ -21,8 +22,10 @@ const ReferralDetailRoute = () => {
       });
       console.log("Referral detail data:", res?.data?.data?.referrals?.[0]);
       setReferralDetail(res.data.data.referrals[0]);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching referral detail:", error);
+      setLoading(false);
     }
   }, [id]);
 
@@ -38,50 +41,62 @@ const ReferralDetailRoute = () => {
           ← Back to dashboard
         </p>
 
-        <h1 className="details-heading">Referral Details</h1>
+        {loading ? (
+          <>
+            <div className="loading-container">
+              <p>Loading Details...</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 className="details-heading">Referral Details</h1>
 
-        <p className="details-description">
-          Full information for this referral partner.
-        </p>
-
-        <div className="details-card">
-          <div className="details-card-header">
-            <h2>{referralDetail?.name}</h2>
-
-            <span className="service-chip">{referralDetail?.serviceName}</span>
-          </div>
-
-          <div className="detail-row">
-            <p>REFERRAL ID</p>
-            <p>{referralDetail?.id}</p>
-          </div>
-
-          <div className="detail-row">
-            <p>NAME</p>
-            <p>{referralDetail?.name}</p>
-          </div>
-
-          <div className="detail-row">
-            <p>SERVICE NAME</p>
-            <p>{referralDetail?.serviceName}</p>
-          </div>
-
-          <div className="detail-row">
-            <p>DATE</p>
-            <p>
-              {new Date(referralDetail?.date).toLocaleDateString("en-GB", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })}
+            <p className="details-description">
+              Full information for this referral partner.
             </p>
-          </div>
 
-          <div className="detail-row">
-            <p>PROFIT</p>
-            <p>${referralDetail?.profit?.toLocaleString()}</p>
-          </div>
-        </div>
+            <div className="details-card">
+              <div className="details-card-header">
+                <h2>{referralDetail?.name}</h2>
+
+                <span className="service-chip">
+                  {referralDetail?.serviceName}
+                </span>
+              </div>
+
+              <div className="detail-row">
+                <p>REFERRAL ID</p>
+                <p>{referralDetail?.id}</p>
+              </div>
+
+              <div className="detail-row">
+                <p>NAME</p>
+                <p>{referralDetail?.name}</p>
+              </div>
+
+              <div className="detail-row">
+                <p>SERVICE NAME</p>
+                <p>{referralDetail?.serviceName}</p>
+              </div>
+
+              <div className="detail-row">
+                <p>DATE</p>
+                <p>
+                  {new Date(referralDetail?.date).toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
+                </p>
+              </div>
+
+              <div className="detail-row">
+                <p>PROFIT</p>
+                <p>${referralDetail?.profit?.toLocaleString()}</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
