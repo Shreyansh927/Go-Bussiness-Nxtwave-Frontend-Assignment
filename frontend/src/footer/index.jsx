@@ -1,3 +1,4 @@
+import React from "react";
 import "./index.css";
 
 const Footer = () => {
@@ -20,9 +21,11 @@ const Footer = () => {
             <a href="/">Terms</a>
           </li>
         </ul>
+
+        <p className="footer-text">© 2024 Go Business, Inc.</p>
       </div>
     </footer>
   );
 };
 
-export default Footer;
+export default React.memo(Footer);
